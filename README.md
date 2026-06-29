@@ -1,43 +1,89 @@
+<p align="center">
+  <img src="docs/hero.svg" alt="HermesSwift hero banner" width="100%" />
+</p>
+
+<p align="center">
+  <a href="https://hermes-agent.nousresearch.com/"><img alt="Hermes Agent" src="https://img.shields.io/badge/Hermes-Agent-40ff73?style=for-the-badge&labelColor=050805"></a>
+  <img alt="SwiftUI" src="https://img.shields.io/badge/SwiftUI-iOS%2017%2B-40ff73?style=for-the-badge&labelColor=050805">
+  <img alt="License MIT" src="https://img.shields.io/badge/License-MIT-40ff73?style=for-the-badge&labelColor=050805">
+</p>
+
 # HermesSwift
 
-HermesSwift is a native SwiftUI iOS client for [Hermes Agent](https://hermes-agent.nousresearch.com/). It provides a mobile-first chat, voice, attachments, session organization, and black/phosphor-green terminal UI for a self-hosted Hermes API server.
+**HermesSwift** is a native SwiftUI iOS client for [Hermes Agent](https://hermes-agent.nousresearch.com/): a mobile command console for chat sessions, voice, attachments, and fast agent actions.
 
-> This is a client app only. It does not include or host a Hermes backend.
+It is designed around a **true-black / phosphor-green terminal UI** and a self-hosted Hermes API server.
 
-## Features
+> HermesSwift is a client app only. It does not include or host a Hermes backend.
 
-- Native SwiftUI chat UI
-- True-black / phosphor-green terminal theme
-- Hermes API session list, new chat, message send, and streaming fallback
-- Attachment upload flow for images and files when the server supports it
-- Markdown/code rendering with copy affordances
-- Voice push-to-talk and text-to-speech integration through an optional OpenAI-compatible voice endpoint
-- Local session organization: rename, pin, archive, search
-- Command palette actions for summarize, extract tasks, debug latest error, copy/speak last answer, and screenshot analysis
-- API token stored in Keychain
+## Why this project exists
+
+Most agent interfaces are desktop-first. HermesSwift explores what an agent console feels like when it is:
+
+- native on iPhone
+- fast enough for one-handed use
+- private-backend friendly
+- voice-capable
+- file/image aware
+- visually distinct instead of generic chat gray
+
+## Highlights
+
+| Area | What HermesSwift includes |
+|---|---|
+| Native UI | SwiftUI screens, session list, chat, settings, diagnostics |
+| Visual identity | True black shell with custom phosphor green theme |
+| Chat | Hermes sessions, new chats, sync send, streaming fallback |
+| Attachments | Upload-first image/file flow with pending attachment cards |
+| Markdown | Rich markdown/code rendering with copy affordances |
+| Voice | Push-to-talk transcription and optional speech playback |
+| Organization | Local rename, pin, archive, search, and filters |
+| Command palette | Summarize, extract tasks, debug latest error, screenshot analysis |
+| Security | API token stored in iOS Keychain |
+
+## Preview
+
+The current public build ships with a terminal-style interface:
+
+```text
+black background
+phosphor green text
+command palette
+voice controls
+attachment cards
+session organization
+```
+
+The hero above is a stylized preview; real device screenshots may vary based on your Hermes deployment and iOS settings.
 
 ## Requirements
 
 - macOS with full Xcode installed
 - iOS 17+
-- XcodeGen (`brew install xcodegen`)
-- A running Hermes Agent API server
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+- A running [Hermes Agent](https://hermes-agent.nousresearch.com/) API server
 - A Hermes API token
+
+Install XcodeGen:
+
+```bash
+brew install xcodegen
+```
 
 ## Configure Hermes
 
-Start or configure your Hermes API server following the official docs:
+Start or configure your Hermes API server using the official docs:
 
 https://hermes-agent.nousresearch.com/docs
 
-The app does not ship with a public default API URL. On first launch, enter your own API server URL, for example:
+HermesSwift intentionally ships with **no public default API URL**. On first launch, enter your own Hermes API server URL, for example:
 
 ```text
 http://192.168.1.20:8642
 https://your-host.example.com
 ```
 
-Then paste your Hermes API token. The token is saved to the iOS Keychain.
+Then paste your Hermes API token. HermesSwift stores it in the iOS Keychain.
 
 ## Optional voice endpoint
 
@@ -53,8 +99,11 @@ Leave the voice URL blank if you only want text chat.
 
 ## Build
 
+Generate the Xcode project:
+
 ```bash
-brew install xcodegen
+git clone https://github.com/Daetrek/HermesSwift.git
+cd HermesSwift
 xcodegen generate
 open HermesSwift.xcodeproj
 ```
@@ -66,19 +115,51 @@ In Xcode:
 3. Change the bundle identifier if needed.
 4. Build and run on your iPhone.
 
-CLI project generation:
+CLI simulator build:
 
 ```bash
 xcodegen generate
-xcodebuild -project HermesSwift.xcodeproj -scheme HermesSwift -configuration Debug -destination 'generic/platform=iOS Simulator' build
+xcodebuild \
+  -project HermesSwift.xcodeproj \
+  -scheme HermesSwift \
+  -configuration Debug \
+  -destination 'generic/platform=iOS Simulator' \
+  build
+```
+
+## Architecture
+
+```text
+HermesSwift iOS app
+├─ SwiftUI views
+├─ Keychain token storage
+├─ Hermes API client
+│  ├─ sessions
+│  ├─ messages
+│  ├─ chat send / stream fallback
+│  └─ attachments
+└─ optional voice client
+   ├─ transcription
+   ├─ speech
+   └─ voice list
 ```
 
 ## Security notes
 
 - API tokens are stored in Keychain, not source or UserDefaults.
 - Do not commit your API URL or token if it reveals private infrastructure.
-- The app is a client. All server-side permissions and safety controls must be enforced by your Hermes deployment.
+- The app is a client. Server-side permissions, data access, and safety controls must be enforced by your Hermes deployment.
+- The public repo uses generic defaults and does not include private hostnames, Apple team IDs, or credentials.
+
+## Roadmap ideas
+
+- theme selector
+- screenshot gallery
+- server-backed session metadata sync
+- local transcript search
+- richer attachment history
+- TestFlight-friendly setup flow
 
 ## License
 
-MIT
+MIT — see [`LICENSE`](LICENSE).

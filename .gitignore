@@ -1,0 +1,33 @@
+# Xcode
+DerivedData/
+build/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.xcscmblueprint
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# User/workspace state
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# Secrets / local config
+.env
+.env.*
+*.p8
+*.mobileprovision
+*.cer
+*.p12
+*.key
+*.pem
+
+# macOS
+.DS_Store
+
+# SwiftPM
+.swiftpm/
+.build/

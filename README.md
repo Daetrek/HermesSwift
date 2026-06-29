@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/hero.svg" alt="HermesSwift hero banner" width="100%" />
+  <img src="docs/hero-v2.svg" alt="HermesSwift hero banner" width="100%" />
 </p>
 
 <p align="center">
